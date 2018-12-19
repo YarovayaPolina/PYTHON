@@ -32,6 +32,10 @@ CREATE TABLE info_about_users (
     allergy_lactose INTEGER,
     allergy_oranges INTEGER,
     allergy_gluten INTEGER,
+    abs_train INTEGER,
+    bums_train INTEGER,
+    upper_body_train INTEGER,
+    low_body_train INTEGER,
     
     FOREIGN KEY (login) REFERENCES users_sign_in(login) 
 )
@@ -56,15 +60,18 @@ conn.commit()
 
 c.execute('''
 CREATE TABLE exercise_advice (
-    advice_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  
-    info TEXT,
-
-    FOREIGN KEY (login) REFERENCES users_sign_in(login) 
+    ex_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    text TEXT,
+    abs INTEGER,
+    bums INTEGER,
+    upper_body INTEGER,
+    low_body INTEGER
 )
 ''')
 
 conn.commit()
+
+
 
 
 
@@ -83,7 +90,11 @@ users = [
         'vegetarian': 1,
         'allergy_lactose': 0,
         'allergy_oranges': 0,
-        'allergy_gluten': 1
+        'allergy_gluten': 1,
+        'abs_train': 1,
+        'bums_train': 0,
+        'upper_body_train': 0,
+        'low_body_train': 0
 
     },
     {
@@ -99,7 +110,11 @@ users = [
         'vegetarian': 0,
         'allergy_lactose': 1,
         'allergy_oranges': 0,
-        'allergy_gluten': 1
+        'allergy_gluten': 1,
+        'abs_train': 0,
+        'bums_train': 1,
+        'upper_body_train': 0,
+        'low_body_train': 0
 
     },
     {
@@ -115,7 +130,11 @@ users = [
         'vegetarian': 1,
         'allergy_lactose': 1,
         'allergy_oranges': 1,
-        'allergy_gluten': 0
+        'allergy_gluten': 0,
+        'abs_train': 0,
+        'bums_train': 0,
+        'upper_body_train': 1,
+        'low_body_train': 0
 
     }
 
@@ -181,12 +200,47 @@ food = [
     },
 ]
 
+exercise = [
+    {
+        'ex_id': '1',
+        'text':'Exercise 1: Barbell Full Squat (5 sets, 3, 3, 2, 2, 1 reps), Exercise 2: Leg Press (4 sets, 8-10 reps), Exercise 3: Seated Leg Curl (4 sets, 8-10 reps)',
+        'abs': 0,
+        'bums': 1,
+        'upper_body': 0,
+        'low_body': 0
+    },
+    {
+        'ex_id': '2',
+        'text':'Exercise 1: Barbell Incline Bench (3 sets, 12-15 reps), Exercise 2: Dumbbell Bench Press (4 sets, 8-10 reps), Exercise 3: Dumbbell Flyes (4 sets, 8-10 reps)',
+        'abs': 0,
+        'bums': 0,
+        'upper_body': 0,
+        'low_body': 1
+    },
+    {
+        'ex_id': '3',
+        'text':'Exercise 1: Pullups (5 sets, 3, 3, 2, 2, 1 reps), Exercise 2: Bent Over Barbell Row (4 sets, 8-10 reps), Exercise 3: Barbell Shrug (3 sets, 12-15 reps)',
+        'abs': 1,
+        'bums': 0,
+        'upper_body': 0,
+        'low_body': 0
+    },
+    {
+        'ex_id': '4',
+        'text':'Exercise 1: Push Press (5 sets, 3, 3, 2, 2, 1 reps), Exercise 2: Front Dumbbell Raise (3 sets, 12-15 reps), Exercise 3: Bent Over Low-Pulley Side Lateral (3 sets, 12-15 reps)',
+        'abs': 0,
+        'bums': 0,
+        'upper_body': 1,
+        'low_body': 0
+    },
+
+]
 
 for user in users:
     c.execute("INSERT INTO info_about_users"
-              "(login, password, first_name, last_name, sex, weight_now, desired_weight, height, age, vegetarian, allergy_lactose, allergy_oranges, allergy_gluten)"
+              "(login, password, first_name, last_name, sex, weight_now, desired_weight, height, age, vegetarian, allergy_lactose, allergy_oranges, allergy_gluten, abs_train, bums_train, upper_body_train, low_body_train)"
               "VALUES "
-              "('{login}','{password}','{first_name}','{last_name}','{sex}','{weight_now}','{desired_weight}','{height}','{age}', {vegetarian}, {allergy_lactose}, {allergy_oranges}, {allergy_gluten})"
+              "('{login}','{password}','{first_name}','{last_name}','{sex}','{weight_now}','{desired_weight}','{height}','{age}', {vegetarian}, {allergy_lactose}, {allergy_oranges}, {allergy_gluten},  {abs_train}, {bums_train}, {upper_body_train}, {low_body_train})"
               "".format(**user))
 
     conn.commit()
@@ -198,6 +252,16 @@ for f in food:
               "VALUES "
               "({advice_id}, '{info}', {has_meat}, {has_lactose} ,{has_oranges},{has_gluten})"
               "".format(**f))
+conn.commit()
+
+
+
+for e in exercise:
+    c.execute("INSERT INTO exercise_advice"
+              "( ex_id, text, abs, bums, upper_body, low_body)"
+              "VALUES "
+              "('{ex_id}', '{text}', {abs}, {bums}, {upper_body}, {low_body})"
+              "".format(**e))
 conn.commit()
 
 c.execute("SELECT * "

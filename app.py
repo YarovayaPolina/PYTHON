@@ -8,8 +8,6 @@ from flask import request
 conn = sqlite3.connect('app.db')
 app = Flask(__name__)
 
-
-
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -51,6 +49,41 @@ def find_diet():
         conn.close()
 
         return render_template('get_fit_diet.html', my_diet=my_advice)
+
+
+@app.route('/exercise')
+def find_exercise():
+    conn = sqlite3.connect('app.db')
+    conn.row_factory = dict_factory
+    c = conn.cursor()
+    c.execute("SELECT * FROM info_about_users WHERE login = 1507")
+    user_one = c.fetchone()
+
+    c.execute("SELECT * FROM exercise_advice")
+    exercise_advice = list(c.fetchall())
+    my_exercise = []
+
+    for ex in exercise_advice:
+        is_allowed = True
+
+        if user_one['abs_train'] and ex['abs']:
+            is_allowed = False
+
+        if user_one['bums_train'] and ex['bums']:
+            is_allowed = False
+
+        if user_one['upper_body_train'] and ex['upper_body']:
+            is_allowed = False
+
+        if user_one['low_body_train'] and ex['low_body']:
+            is_allowed = False
+
+        if is_allowed:
+            my_exercise.append(ex['text'])
+
+        conn.close()
+
+        return render_template('get_fit_exercise.html', my_exercise=my_exercise)
 
 
 @app.route('/')

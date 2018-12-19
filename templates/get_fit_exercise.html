@@ -10,7 +10,7 @@
     <title>GetFit</title>
     <style>
         body {
-            background: #c7b39b url(https://images.pexels.com/photos/305239/pexels-photo-305239.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+            background: #c7b39b url(https://images.pexels.com/photos/28061/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
             color: #fff;
             background-size:cover;
 
@@ -39,6 +39,9 @@
         #content {
             z-index:1;
         }
+        .jumbotron {
+            background: rgba(221, 213, 202, 0.55);
+        }
 
     </style>
 </head>
@@ -54,10 +57,10 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Page <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#"> Page <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Diary</a>
+                <a class="nav-link" href="#"> Diary </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link " href="http://127.0.0.1:5000/exercise">Exercise</a>
@@ -78,46 +81,35 @@
 </br>
 </br>
 
-
-<main role="main" class="col-md-9 ml-sm-auto  px-4">
+<main role="main" class="col-md-9 ml-sm-auto px-4">
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <div class="text-dark">
             <h1 class="display-3 masthead-brand" > Exercises </h1>
         </div>
 
-
-
     </div>
     <div class="container marketing">
-        <div class="text-dark">
+        <div class="text-light">
 
-
-            <!-- START THE FEATURETTES -->
-
-
+            <!— START THE FEATURETTES —>
 
             <div class="row featurette">
                 <div class="col-md-7">
-                    <h2 class="featurette-heading">Look what we have for you</h2>
-                    <h4 class="featurette-heading">Exercise of the day</h4>
+                    <h3 class="featurette-heading">Exercise of the day</h3>
 
-                    {% for login in diet_advice %}
-                        <div class="card">
-                            <div class="card-body">
-                                {{diet_advice.info}}
+                    {% for ex in my_exercise %}
+                        <div class="jumbotron">
+
+                                <div class="text-dark">
+                                    <p class="lead"> {{ex}} </p>
+                                </div>
                             </div>
+
+
                         </div>
                     {% endfor %}
-
-
-                </div>
-                <div class="col-md-5">
-                    <img class="featurette-image img-fluid mx-auto" src="https://t4.ftcdn.net/jpg/02/07/71/89/500_F_207718927_jvLso6kBo2JGMEYEOrvFVgK4vekxU0b4.jpg" alt="Generic placeholder image">
-                </div>
             </div>
 </main>
-
-
 
 </body>
