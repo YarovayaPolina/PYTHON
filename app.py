@@ -102,18 +102,16 @@ def personal():
     return render_template('get_fit_personal.html')
 
 
+@app.route('/group')
+def find_group():
+    conn = sqlite3.connect('app.db')
+    conn.row_factory = dict_factory
+    c = conn.cursor()
+    c.execute("SELECT first_name, last_name, weight_now FROM info_about_users")
+    my_group=list(c.fetchall())
 
-
-@app.route('/exercise')
-def exercise():
-    return render_template('get_fit_exercise.html')
-
-#@app.route('/result')
-# #def search_for_person():
-#   q=request.args.get('query')
-#  users = db.get_users_by_name(q)
-# return render_template('page01.html', q=q, users=users)
-
+    conn.close()
+    return render_template('get_fit_group.html', my_group=my_group)
 
 
 
